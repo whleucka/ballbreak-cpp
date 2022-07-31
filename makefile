@@ -21,7 +21,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -Wall -g
-LIB         := -lallegro -lallegro_font
+LIB         := -lallegro -lallegro_font -lallegro_primitives
 INC         := -I$(INCDIR) -I/usr/local/include
 INCDEP      := -I$(INCDIR)
 

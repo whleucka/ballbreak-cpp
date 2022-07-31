@@ -1,0 +1,67 @@
+[
+ {
+  "directory": "/home/whleucka/cpp/breakout",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-Iinc",
+   "-MM",
+   "src/game.cpp",
+   "obj/game.d"
+  ],
+  "file": "src/game.cpp"
+ },
+ {
+  "directory": "/home/whleucka/cpp/breakout",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-Iinc",
+   "-MM",
+   "src/brick.cpp",
+   "obj/brick.d"
+  ],
+  "file": "src/brick.cpp"
+ },
+ {
+  "directory": "/home/whleucka/cpp/breakout",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-Iinc",
+   "-MM",
+   "src/ball.cpp",
+   "obj/ball.d"
+  ],
+  "file": "src/ball.cpp"
+ },
+ {
+  "directory": "/home/whleucka/cpp/breakout",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-Iinc",
+   "-MM",
+   "src/main.cpp",
+   "obj/main.d"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "/home/whleucka/cpp/breakout",
+  "arguments": [
+   "g++",
+   "-Wall",
+   "-g",
+   "-Iinc",
+   "-MM",
+   "src/player.cpp",
+   "obj/player.d"
+  ],
+  "file": "src/player.cpp"
+ }
+]

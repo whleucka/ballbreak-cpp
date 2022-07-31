@@ -1,7 +1,6 @@
-#include <iostream>
+#include "game.h"
 
-int main (int argc, char *argv[])
-{
-    std::cout << "Hello!";    
+int main(int argc, char *argv[]) {
+    new Game();
     return 0;
 }
