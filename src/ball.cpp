@@ -1,9 +1,8 @@
 #include "ball.h"
 #include "globals.h"
 
-Ball::Ball(int x, int y, int r) {
-    this->x = x;
-    this->y = y;
+Ball::Ball(Player* player, float r) {
+    this->player = player;
     this->r = r;
 }
 
@@ -15,9 +14,16 @@ void Ball::draw() {
 }
 
 void Ball::move() {
-    direction();
-    x = x + speed * dx;
-    y = y + speed * dy;
+    if (!active) {
+        Point* player_pos = player->getPosition();
+        x = player_pos->x + player->getWidth() / 2;
+        y = player_pos->y - r;
+    } else {
+        direction();
+        x = x + speed * dx;
+        y = y + speed * dy;
+    }
+
 }
 
 bool Ball::isMoving() {
@@ -43,4 +49,11 @@ Point* Ball::getPosition() {
     point->x = this->x;
     point->y = this->y;
     return point;
+}
+
+void Ball::changeDirection(int dx, int dy) {
+    if (dx != 0) 
+        this->dx = dx;
+    if (dy != 0) 
+        this->dy = dy;
 }

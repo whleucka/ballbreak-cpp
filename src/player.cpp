@@ -1,7 +1,6 @@
 #include "player.h"
-#include <allegro5/color.h>
 
-Player::Player(float x, float y, int width, int height) {
+Player::Player(float x, float y, float width, float height) {
     this->x = x;
     this->y = y;
     this->width = width;
@@ -16,7 +15,7 @@ void Player::draw() {
     float y1 = y;
     float x2 = x + width;
     float y2 = y + height;
-    al_draw_filled_rectangle(x1, y1, x2, y2, al_map_rgba_f(255, 255, 255, 255));
+    al_draw_filled_rectangle(x1, y1, x2, y2, al_map_rgba(255, 15, 15, 255));
 }
 
 void Player::left() {

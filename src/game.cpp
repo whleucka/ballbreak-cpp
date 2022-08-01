@@ -1,5 +1,4 @@
 #include "game.h"
-#include "globals.h"
 
 Game::Game() {
     // Set up the game and run the loop
@@ -33,24 +32,45 @@ void Game::init() {
 }
 
 void Game::detectCollisions() {
-    // Ball hits player
     Point* ball_pos = ball->getPosition();
     Point* player_pos = player->getPosition();
+    
+     
+    if (ball->isSouth()) {
+        // Ball hits player
+       
+        // Match y coordinate
+        if (ball_pos->y + ball->getRadius() >  player_pos->y &&
+                ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
+            // Match x coordinate
+            if (ball_pos->x + ball->getRadius() > player_pos->x &&
+                    ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
+                // Bounce ball upwards
+                ball->changeDirection(0, -1);
+            }
+        }
 
-    std::cout << "ball: " << ball_pos->x << " " << ball_pos->y << std::endl;
-    std::cout << "player: " << player_pos->x << " " << player_pos->y << std::endl;
+        // Ball hits the floor :(
+        if (ball_pos->y + ball->getRadius() >= SCREEN_HEIGHT) {
+            // Lose a life
+            life--;
+            // Check end of game state
+            if (life < 0) {
+                running = false;
+                std::cout << "Game over..." << std::endl;
+                std::cout << "Final score: " << score << std::endl;
+            }
 
-    delete(ball_pos);
-    delete(player_pos);
+            ball->setActive(false);
+        }
+    }
+
 }
 
 void Game::loop() {
     ALLEGRO_EVENT event;
-    ball = new Ball(100,600,5);
     player = new Player((SCREEN_WIDTH / 2) - 70, 720, 140, 10);
-
-    bool running = true;
-    bool paused = false;
+    ball = new Ball(player, 5);
 
     while (running) {
         al_wait_for_event(queue, &event);
@@ -68,6 +88,9 @@ void Game::loop() {
             }
         } else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (event.keyboard.keycode) {
+                case ALLEGRO_KEY_SPACE:
+                    ball->setActive(true);
+                    break;
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     break;
@@ -100,6 +123,10 @@ void Game::loop() {
 
             // Move ball / player
             if (!paused) {
+                if (ball->isActive()) {
+                    // Player accumulates points when ball is active
+                    score += 500;
+                }
                 ball->move();
                 player->move();
                 detectCollisions();

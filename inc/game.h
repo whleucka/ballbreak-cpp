@@ -17,7 +17,10 @@ private:
   ALLEGRO_DISPLAY *disp;
   ALLEGRO_FONT *font;
   bool redraw = false;
+  bool running = true;
+  bool paused = false;
   int score = 0;
+  int life = 4;
   Ball* ball;
   Player* player;
 

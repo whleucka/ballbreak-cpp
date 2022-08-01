@@ -8,3 +8,8 @@ struct Point {
     float x, y;
 };
 
+struct Colour {
+    float r, g , b, a;
+};
+
+
