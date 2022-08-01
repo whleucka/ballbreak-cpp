@@ -1,10 +1,10 @@
 #include "ball.h"
 #include "globals.h"
 
-Ball::Ball(int cx, int cy, int cr) {
-    x = cx;
-    y = cy;
-    r = cr;
+Ball::Ball(int x, int y, int r) {
+    this->x = x;
+    this->y = y;
+    this->r = r;
 }
 
 Ball::~Ball() {
@@ -20,7 +20,12 @@ void Ball::move() {
     y = y + speed * dy;
 }
 
+bool Ball::isMoving() {
+    return dx != 0 && dy != 0;
+}
+
 void Ball::direction() {
+    // Ball direction heading north, east, south, west
     if (x + speed >= SCREEN_WIDTH) {
         dx = -1;
     } else if (x - speed <= 0) {
@@ -31,4 +36,11 @@ void Ball::direction() {
     } else if (y - speed <= 0) {
         dy = 1;
     }
+}
+
+Point* Ball::getPosition() {
+    Point* point = new Point;
+    point->x = this->x;
+    point->y = this->y;
+    return point;
 }

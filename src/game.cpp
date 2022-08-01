@@ -1,9 +1,8 @@
 #include "game.h"
 #include "globals.h"
-#include <allegro5/events.h>
-#include <allegro5/keycodes.h>
 
 Game::Game() {
+    // Set up the game and run the loop
     init();
     loop();
 }
@@ -13,6 +12,8 @@ Game::~Game() {
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
+    delete(ball);
+    delete(player);
 }
 
 void Game::init() {
@@ -31,9 +32,22 @@ void Game::init() {
     al_start_timer(timer);
 }
 
+void Game::detectCollisions() {
+    // Ball hits player
+    Point* ball_pos = ball->getPosition();
+    Point* player_pos = player->getPosition();
+
+    std::cout << "ball: " << ball_pos->x << " " << ball_pos->y << std::endl;
+    std::cout << "player: " << player_pos->x << " " << player_pos->y << std::endl;
+
+    delete(ball_pos);
+    delete(player_pos);
+}
+
 void Game::loop() {
     ALLEGRO_EVENT event;
-    ball = new Ball(100,500,5);
+    ball = new Ball(100,600,5);
+    player = new Player((SCREEN_WIDTH / 2) - 70, 720, 140, 10);
 
     bool running = true;
     bool paused = false;
@@ -43,18 +57,35 @@ void Game::loop() {
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
+        } else if (event.type == ALLEGRO_EVENT_KEY_UP) {
+            switch (event.keyboard.keycode) {
+                case ALLEGRO_KEY_LEFT:
+                case ALLEGRO_KEY_RIGHT:
+                case ALLEGRO_KEY_A:
+                case ALLEGRO_KEY_D:
+                    player->stop();
+                    break;
+            }
         } else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            // Keyboard stuff
             switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     break;
+                case ALLEGRO_KEY_LEFT:
+                case ALLEGRO_KEY_A:
+                    player->left();
+                    break;
+                case ALLEGRO_KEY_RIGHT:
+                case ALLEGRO_KEY_D:
+                    player->right();
+                    break;
+                case ALLEGRO_KEY_PAUSE:
                 case ALLEGRO_KEY_P:
                     paused = !paused;
                     break;
             }
         } else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
-            // Mouse stuff
+            // Mouse stuff...
         } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
         }
@@ -70,12 +101,14 @@ void Game::loop() {
             // Move ball / player
             if (!paused) {
                 ball->move();
+                player->move();
+                detectCollisions();
             }
 
             // Draw ball / player / bricks
             ball->draw();
+            player->draw();
             
-
             al_flip_display();
             redraw = false;
         }

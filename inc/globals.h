@@ -1,7 +1,10 @@
-#ifndef GLOBALS_H
+#pragma once
 
-#define SCREEN_WIDTH 1200
-#define SCREEN_HEIGHT 768
-#define FPS 60
+#define SCREEN_WIDTH 1200.0
+#define SCREEN_HEIGHT 768.0
+#define FPS 60.0
 
-#endif // !GLOBALS_H
+struct Point {
+    float x, y;
+};
+
