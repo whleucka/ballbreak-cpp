@@ -37,10 +37,10 @@ void Game::detectCollisions() {
     Point* ball_pos = ball->getPosition();
     Point* player_pos = player->getPosition();
      
-    // Ball hits brick
-    // This is where is could be a bit tricky
     int brick_count = bricks.size();
     int dead_bricks = 0;
+
+    // Ball hits brick :)
     for (Brick* brick: bricks) {
         if (brick->isAlive()) {
             Point* brick_pos = brick->getPosition();
@@ -52,10 +52,10 @@ void Game::detectCollisions() {
                 : ball_pos->y - ball->getRadius() + ball->getSpeed();
             if (ball_x >= brick_pos->x && ball_x <= brick_pos->x + brick->getWidth() &&
                     ball_y >= brick_pos->y && ball_y <= brick_pos->y + brick->getHeight()) {
-
                 // Figure out bounce
                 float ball_dx = 0;
                 float ball_dy = 0;
+
                 float brick_x = ball->isEast()
                     ? brick_pos->x
                     : brick_pos->x + brick->getWidth();
@@ -72,8 +72,9 @@ void Game::detectCollisions() {
 
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
+
+                // Player accumulates points when ball is active
                 if (ball->isActive()) {
-                    // Player accumulates points when ball is active
                     score += 1000;
                 }
                 break;
@@ -82,24 +83,15 @@ void Game::detectCollisions() {
             dead_bricks++;
         }
     }
-    // Level cleared
-    if (dead_bricks == brick_count) {
-        level++;
-        score += 10000;
-        ball->setActive(false);
-        bricks.clear();
-        loadBricks();
-    }
 
     if (ball->isSouth()) {
-        // Ball hits player
-        // Match y coordinate
+        // Ball hits player :)
         if (ball_pos->y + ball->getRadius() >  player_pos->y &&
                 ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
-            // Match x coordinate
+            // Match y coordinate
             if (ball_pos->x + ball->getRadius() > player_pos->x &&
                     ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
-                // Bounce ball upwards
+                // Match x coordinate
                 ball->changeDirection(0, -1);
             }
         }
@@ -119,6 +111,15 @@ void Game::detectCollisions() {
 
             ball->setActive(false);
         }
+    }
+
+    // Level cleared
+    if (dead_bricks == brick_count) {
+        level++;
+        score += 10000;
+        ball->setActive(false);
+        bricks.clear();
+        loadBricks();
     }
 }
 
