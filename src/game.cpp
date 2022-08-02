@@ -77,7 +77,6 @@ void Game::detectCollisions() {
             ball->setActive(false);
         }
     }
-
 }
 
 void Game::loadBricks() {
@@ -100,7 +99,7 @@ void Game::loadBricks() {
 
 void Game::loop() {
     ALLEGRO_EVENT event;
-    player = new Player((SCREEN_WIDTH / 2) - 70, 720, 140, 10);
+    player = new Player((SCREEN_WIDTH / 2) - 60, 720, 120, 10);
     ball = new Ball(player, 5);
     loadBricks();
 
