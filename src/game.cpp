@@ -75,7 +75,7 @@ void Game::detectCollisions() {
 
                 // Player accumulates points when ball is active
                 if (ball->isActive()) {
-                    score += 1000;
+                    score += points->brick;
                 }
                 break;
             }
@@ -100,13 +100,12 @@ void Game::detectCollisions() {
         if (ball_pos->y + ball->getRadius() >= SCREEN_HEIGHT) {
             // Lose a life
             life--;
-            // Player accumulates points when ball is active
-            score -= 250;
+            score += points->ball;
             // Check end of game state
             if (life < 0) {
                 running = false;
                 std::cout << "Game over..." << std::endl;
-                std::cout << "Final score: " << score << std::endl;
+                std::cout << "Final score: " << std::max(score, 0) << std::endl;
             }
 
             ball->setActive(false);
@@ -116,7 +115,7 @@ void Game::detectCollisions() {
     // Level cleared
     if (dead_bricks == brick_count) {
         level++;
-        score += 10000;
+        score += points->level;
         ball->setActive(false);
         bricks.clear();
         loadBricks();
@@ -156,7 +155,7 @@ void Game::loop() {
             redraw = true;
             if (ball->isActive()) {
                 // Player accumulates points when ball is active
-                score += 2;
+                score += points->time;
             }
         } else if (event.type == ALLEGRO_EVENT_KEY_UP) {
             switch (event.keyboard.keycode) {
@@ -203,7 +202,7 @@ void Game::loop() {
             char the_score[50];
             char the_level[50];
             char the_lives[50];
-            sprintf(the_score, "SCORE %d", score);
+            sprintf(the_score, "SCORE %d", std::max(score, 0));
             sprintf(the_level, "LEVEL %d", level);
             sprintf(the_lives, "LIVES %d", life);
             al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 10, 0, the_lives);

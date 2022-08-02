@@ -16,6 +16,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct PointModifier {
+  int time = 2;
+  int brick = 500;
+  int level = 10000;
+  int ball = -500;
+};
+
 class Game {
 private:
   ALLEGRO_TIMER *timer;
@@ -35,6 +42,7 @@ private:
   void loop();
   void detectCollisions();
   void loadBricks();
+  PointModifier* points = new PointModifier;
 
 public:
   Game();
