@@ -52,41 +52,26 @@ void Game::detectCollisions() {
                 : ball_pos->y - ball->getRadius() + ball->getSpeed();
             if (ball_x >= brick_pos->x && ball_x <= brick_pos->x + brick->getWidth() &&
                     ball_y >= brick_pos->y && ball_y <= brick_pos->y + brick->getHeight()) {
+
                 // Figure out bounce
                 float ball_dx = 0;
                 float ball_dy = 0;
-                if (ball->isSouth()) {
-                    if (ball->isEast()) {
-                        if (ball_pos->x + ball->getSpeed() < brick_pos->x) {
-                            ball_dx = -1;
-                        } else {
-                            ball_dy = -1;
-                        }
-                    } else {
-                        if (ball_pos->x - ball->getSpeed() < brick_pos->x + brick->getWidth()) {
-                            ball_dx = 1;
-                        } else {
-                            ball_dy = -1;
-                        }
-                    }
+                float brick_x = ball->isEast()
+                    ? brick_pos->x
+                    : brick_pos->x + brick->getWidth();
+
+                if (ball_pos->x + ball->getSpeed() < brick_x) {
+                    ball_dx = ball->isEast()
+                        ? -1
+                        : 1;
                 } else {
-                    if (ball->isEast()) {
-                        if (ball_pos->x + ball->getSpeed() < brick_pos->x) {
-                            ball_dx = -1;
-                        } else {
-                            ball_dy = 1;
-                        }
-                    } else {
-                        if (ball_pos->x - ball->getSpeed() < brick_pos->x + brick->getWidth()) {
-                            ball_dx = 1;
-                        } else {
-                            ball_dy = 1;
-                        }
-                    }
+                    ball_dy = ball->isSouth()
+                        ? -1
+                        : 1;
                 }
+
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
-                delete(brick);
                 if (ball->isActive()) {
                     // Player accumulates points when ball is active
                     score += 1000;
@@ -100,7 +85,7 @@ void Game::detectCollisions() {
     // Level cleared
     if (dead_bricks == brick_count) {
         level++;
-        score+=10000;
+        score += 10000;
         ball->setActive(false);
         bricks.clear();
         loadBricks();
@@ -191,10 +176,12 @@ void Game::loop() {
                     break;
                 case ALLEGRO_KEY_LEFT:
                 case ALLEGRO_KEY_A:
+                case ALLEGRO_KEY_J:
                     player->left();
                     break;
                 case ALLEGRO_KEY_RIGHT:
                 case ALLEGRO_KEY_D:
+                case ALLEGRO_KEY_L:
                     player->right();
                     break;
                 case ALLEGRO_KEY_PAUSE:
@@ -220,7 +207,7 @@ void Game::loop() {
             sprintf(the_lives, "LIVES %d", life);
             al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 10, 0, the_lives);
             al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 10, 0, the_level);
-            al_draw_text(font, al_map_rgb(255, 255, 255), 200, SCREEN_HEIGHT - 10, 0, the_score);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 175, SCREEN_HEIGHT - 10, 0, the_score);
             
 
             // Move ball / player
