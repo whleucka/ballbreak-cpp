@@ -1,5 +1,4 @@
 #include "ball.h"
-#include "globals.h"
 
 Ball::Ball(Player* player, float r) {
     this->player = player;

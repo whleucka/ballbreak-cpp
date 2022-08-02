@@ -1,4 +1,5 @@
 #include "game.h"
+#include "globals.h"
 
 Game::Game() {
     // Set up the game and run the loop
@@ -11,6 +12,7 @@ Game::~Game() {
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
+    bricks.clear();
     delete(ball);
     delete(player);
 }
@@ -34,11 +36,22 @@ void Game::init() {
 void Game::detectCollisions() {
     Point* ball_pos = ball->getPosition();
     Point* player_pos = player->getPosition();
-    
      
+    // Ball hits brick
+    // This is where is could be a bit tricky
+    for (Brick* brick: bricks) {
+        if (brick->isAlive()) {
+            Point* brick_pos = brick->getPosition();
+            if (ball->isSouth()) {
+
+            } else {
+                
+            }
+        }
+    }
+
     if (ball->isSouth()) {
         // Ball hits player
-       
         // Match y coordinate
         if (ball_pos->y + ball->getRadius() >  player_pos->y &&
                 ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
@@ -67,10 +80,29 @@ void Game::detectCollisions() {
 
 }
 
+void Game::loadBricks() {
+    float start_x = 60;
+    float start_y = 100;
+    float width = 30;
+    float height = 12;
+    int cols = std::floor((SCREEN_WIDTH - start_x - width * 2) / width);
+    int rows = 10;
+    for (int h = 0; h < rows; h++) {
+        for (int i = 0; i < cols; i++) {
+            float x = start_x + (width * i);
+            float y = start_y + (height * h);
+            Brick* b = new Brick(x, y, width, height);
+            b->setColour(255, 255, 255, 127);
+            bricks.push_back(b);
+        }
+    }
+}
+
 void Game::loop() {
     ALLEGRO_EVENT event;
     player = new Player((SCREEN_WIDTH / 2) - 70, 720, 140, 10);
     ball = new Ball(player, 5);
+    loadBricks();
 
     while (running) {
         al_wait_for_event(queue, &event);
@@ -133,6 +165,10 @@ void Game::loop() {
             }
 
             // Draw ball / player / bricks
+            for (Brick* brick: bricks) {
+                if (brick->isAlive())
+                    brick->draw();
+            }
             ball->draw();
             player->draw();
             
