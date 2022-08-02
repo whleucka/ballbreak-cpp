@@ -87,6 +87,10 @@ void Game::detectCollisions() {
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
                 delete(brick);
+                if (ball->isActive()) {
+                    // Player accumulates points when ball is active
+                    score += 1000;
+                }
                 break;
             }
         } else {
@@ -96,7 +100,7 @@ void Game::detectCollisions() {
     // Level cleared
     if (dead_bricks == brick_count) {
         level++;
-        score+=100000;
+        score+=10000;
         ball->setActive(false);
         bricks.clear();
         loadBricks();
@@ -119,6 +123,8 @@ void Game::detectCollisions() {
         if (ball_pos->y + ball->getRadius() >= SCREEN_HEIGHT) {
             // Lose a life
             life--;
+            // Player accumulates points when ball is active
+            score -= 250;
             // Check end of game state
             if (life < 0) {
                 running = false;
@@ -162,6 +168,10 @@ void Game::loop() {
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
+            if (ball->isActive()) {
+                // Player accumulates points when ball is active
+                score += 2;
+            }
         } else if (event.type == ALLEGRO_EVENT_KEY_UP) {
             switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_LEFT:
@@ -201,17 +211,20 @@ void Game::loop() {
         if (redraw && al_is_event_queue_empty(queue)) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            /* Display score / level
-            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "SCORE n/a");
-            al_draw_text(font, al_map_rgb(255, 255, 255), 100, 0, 0, "LEVEL n/a");
-            */
+            // Display score / level
+            char the_score[50];
+            char the_level[50];
+            char the_lives[50];
+            sprintf(the_score, "SCORE %d", score);
+            sprintf(the_level, "LEVEL %d", level);
+            sprintf(the_lives, "LIVES %d", life);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 10, 0, the_lives);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 10, 0, the_level);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 200, SCREEN_HEIGHT - 10, 0, the_score);
+            
 
             // Move ball / player
             if (!paused) {
-                if (ball->isActive()) {
-                    // Player accumulates points when ball is active
-                    score += 500;
-                }
                 detectCollisions();
                 ball->move();
                 player->move();

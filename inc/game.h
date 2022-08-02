@@ -13,6 +13,8 @@
 #include <random>
 #include <stdbool.h>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 
 class Game {
 private:
