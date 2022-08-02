@@ -11,5 +11,3 @@ struct Point {
 struct Colour {
     float r, g , b, a;
 };
-
-

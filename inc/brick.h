@@ -17,4 +17,7 @@ public:
   void setColour(float r, float g, float b, float a);
   Point* getPosition();
   bool isAlive() { return alive; }
+  float getWidth() { return width; }
+  float getHeight() { return height; }
+  void kill() { alive = false; }
 };

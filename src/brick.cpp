@@ -15,7 +15,7 @@ void Brick::draw() {
     float y1 = y;
     float x2 = x + width;
     float y2 = y + height;
-    al_draw_rectangle(x1, y1, x2, y2, al_map_rgba(255, 255, 255, 255), 1);
+    al_draw_rectangle(x1, y1, x2, y2, al_map_rgba(colour->r, colour->g, colour->b, colour->a), 1);
 }
 
 void Brick::setColour(float r, float g, float b, float a) {

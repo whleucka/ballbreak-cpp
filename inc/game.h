@@ -9,9 +9,10 @@
 #include <allegro5/events.h>
 #include <allegro5/keycodes.h>
 #include <iostream>
+#include <math.h>
+#include <random>
 #include <stdbool.h>
 #include <vector>
-#include <math.h>
 
 class Game {
 private:
@@ -22,6 +23,7 @@ private:
   bool redraw = false;
   bool running = true;
   bool paused = false;
+  int level = 1;
   int score = 0;
   int life = 4;
   Ball *ball;

@@ -20,6 +20,7 @@ public:
   void direction();
   bool isMoving();
   Point* getPosition();
+  float getSpeed() { return speed; }
   float getRadius() { return r; }
   bool isActive() { return active; }
   bool isSouth() { return dy == 1; }

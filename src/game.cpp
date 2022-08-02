@@ -39,15 +39,67 @@ void Game::detectCollisions() {
      
     // Ball hits brick
     // This is where is could be a bit tricky
+    int brick_count = bricks.size();
+    int dead_bricks = 0;
     for (Brick* brick: bricks) {
         if (brick->isAlive()) {
             Point* brick_pos = brick->getPosition();
-            if (ball->isSouth()) {
-
-            } else {
-                
+            float ball_x = ball->isEast()
+                ? ball_pos->x + ball->getRadius() + ball->getSpeed()
+                : ball_pos->x - ball->getRadius() + ball->getSpeed();
+            float ball_y = ball->isSouth()
+                ? ball_pos->y + ball->getRadius() + ball->getSpeed()
+                : ball_pos->y - ball->getRadius() + ball->getSpeed();
+            if (ball_x >= brick_pos->x && ball_x <= brick_pos->x + brick->getWidth() &&
+                    ball_y >= brick_pos->y && ball_y <= brick_pos->y + brick->getHeight()) {
+                // Figure out bounce
+                float ball_dx = 0;
+                float ball_dy = 0;
+                if (ball->isSouth()) {
+                    if (ball->isEast()) {
+                        if (ball_pos->x + ball->getSpeed() < brick_pos->x) {
+                            ball_dx = -1;
+                        } else {
+                            ball_dy = -1;
+                        }
+                    } else {
+                        if (ball_pos->x - ball->getSpeed() < brick_pos->x + brick->getWidth()) {
+                            ball_dx = 1;
+                        } else {
+                            ball_dy = -1;
+                        }
+                    }
+                } else {
+                    if (ball->isEast()) {
+                        if (ball_pos->x + ball->getSpeed() < brick_pos->x) {
+                            ball_dx = -1;
+                        } else {
+                            ball_dy = 1;
+                        }
+                    } else {
+                        if (ball_pos->x - ball->getSpeed() < brick_pos->x + brick->getWidth()) {
+                            ball_dx = 1;
+                        } else {
+                            ball_dy = 1;
+                        }
+                    }
+                }
+                ball->changeDirection(ball_dx, ball_dy);
+                brick->kill();
+                delete(brick);
+                break;
             }
+        } else {
+            dead_bricks++;
         }
+    }
+    // Level cleared
+    if (dead_bricks == brick_count) {
+        level++;
+        score+=100000;
+        ball->setActive(false);
+        bricks.clear();
+        loadBricks();
     }
 
     if (ball->isSouth()) {
@@ -80,18 +132,20 @@ void Game::detectCollisions() {
 }
 
 void Game::loadBricks() {
+    srand(time(NULL)); // Seed the random
+    float colour_random = rand()%(255-0 + 1) + 0;
     float start_x = 60;
-    float start_y = 100;
+    float start_y = 50;
     float width = 30;
     float height = 12;
     int cols = std::floor((SCREEN_WIDTH - start_x - width * 2) / width);
-    int rows = 10;
+    int rows = std::min(level, 50);
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
             float x = start_x + (width * i);
             float y = start_y + (height * h);
             Brick* b = new Brick(x, y, width, height);
-            b->setColour(255, 255, 255, 127);
+            b->setColour(255, colour_random, int(i*h*colour_random) % 255, 100);
             bricks.push_back(b);
         }
     }
@@ -158,9 +212,9 @@ void Game::loop() {
                     // Player accumulates points when ball is active
                     score += 500;
                 }
+                detectCollisions();
                 ball->move();
                 player->move();
-                detectCollisions();
             }
 
             // Draw ball / player / bricks
