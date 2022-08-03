@@ -60,14 +60,22 @@ void Game::detectCollisions() {
                     ? brick_pos->x
                     : brick_pos->x + brick->getWidth();
 
-                if (ball_pos->x + ball->getSpeed() < brick_x) {
-                    ball_dx = ball->isEast()
-                        ? -1
-                        : 1;
+                if (ball->isEast()) {
+                    if (ball_x < brick_x) {
+                        ball_dx = -1;
+                    } else {
+                        ball_dy = ball->isSouth()
+                            ? -1
+                            : 1;
+                    }
                 } else {
-                    ball_dy = ball->isSouth()
-                        ? -1
-                        : 1;
+                    if (ball_x > brick_x) {
+                        ball_dx = 1;
+                    } else {
+                        ball_dy = ball->isSouth()
+                            ? -1
+                            : 1;
+                    }
                 }
 
                 ball->changeDirection(ball_dx, ball_dy);
@@ -127,10 +135,10 @@ void Game::loadBricks() {
     float colour_random = rand()%(255-0 + 1) + 0;
     float start_x = 60;
     float start_y = 50;
-    float width = 30;
-    float height = 12;
+    float width = 60;
+    float height = 25;
     int cols = std::floor((SCREEN_WIDTH - start_x - width * 2) / width);
-    int rows = std::min(level, 50);
+    int rows = std::min(level, 50) + 2;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
             float x = start_x + (width * i);
