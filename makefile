@@ -7,7 +7,7 @@
 CC          := g++
 
 # The Target Binary Program
-TARGET      := breakout
+TARGET      := ballbreak
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
