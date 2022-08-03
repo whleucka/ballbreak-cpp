@@ -62,14 +62,12 @@ void Game::detectCollisions() {
             float brick_y = brick_pos->y + brick->getHeight() / 2;
 
             float distance = calcDistance(brick_x, brick_y, ball_x, ball_y);
-            float ball_brick_angle = std::atan2(brick_y - ball_pos->y, brick_x - ball_pos->x) * 180 / M_PI;
+            float ball_brick_angle = std::atan2(ball_pos->y - brick_y, ball_pos->x - brick_x) * 180 / M_PI;
 
             float ball_dx, ball_dy;
             if (distance <= ball->getRadius() * 5.0f) {
-                ball_dx = std::sin(ball_brick_angle * M_PI / 180);
-                ball_dy = ball_brick_angle < 0
-                    ? 1
-                    : -1;
+                ball_dx = std::cos(ball_brick_angle * M_PI / 180);
+                ball_dy = std::sin(ball_brick_angle * M_PI / 180);
 
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
@@ -86,10 +84,8 @@ void Game::detectCollisions() {
         if (ball_pos->y + ball->getRadius() >  player_pos->y &&
                 ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
             // Match y coordinate
-            if (ball_pos->x + ball->getRadius() > player_pos->x &&
-                    ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
-                // Match x coordinate
-                float ball_player_angle = std::atan2(ball_pos->y - player_pos->y, ball_pos->x - player_pos->x) * 180 / M_PI;
+            if (ball_pos->x + ball->getRadius() > player_pos->x && ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) { // Match x coordinate
+                float ball_player_angle = std::atan2(ball_pos->y - player_pos->y + player->getHeight() / 2, ball_pos->x - player_pos->x + player->getWidth() / 2) * 180 / M_PI;
                 float ball_dx = std::cos(ball_player_angle * M_PI / 180);
                 ball->changeDirection(ball_dx, -1);
             }
