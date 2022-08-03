@@ -135,7 +135,7 @@ void Game::loadBricks() {
     float height = ball->getRadius() * 4;
     float start_x = width;
     float start_y = height + 15;
-    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width);
+    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width) + 1;
     int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
