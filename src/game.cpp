@@ -48,7 +48,7 @@ void Game::detectCollisions() {
     float ball_y = ball->isSouth()
         ? ball_pos->y + ball->getRadius() + ball->getSpeed()
         : ball_pos->y - ball->getRadius() + ball->getSpeed();
-     
+
     int brick_count = bricks.size();
     int dead_bricks = 0;
 
@@ -141,10 +141,6 @@ void Game::loop() {
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
-            if (ball->isActive()) {
-                // Player accumulates points when ball is active
-                score += points->time;
-            }
         } else if (event.type == ALLEGRO_EVENT_KEY_UP) {
             switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_LEFT:
@@ -186,6 +182,10 @@ void Game::loop() {
         }
 
         if (redraw && al_is_event_queue_empty(queue)) {
+            if (ball->isActive() && !paused) {
+                // Player accumulates points when ball is active
+                score += points->time;
+            }
             detectCollisions();
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -199,7 +199,7 @@ void Game::loop() {
             al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 20, 0, the_lives);
             al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 20, 0, the_level);
             al_draw_text(font, al_map_rgb(255, 255, 255), 175, SCREEN_HEIGHT - 20, 0, the_score);
-            
+
             // Move ball / player
             if (!paused) {
                 ball->move();
@@ -213,7 +213,7 @@ void Game::loop() {
             }
             ball->draw();
             player->draw();
-            
+
             al_flip_display();
             redraw = false;
         }
