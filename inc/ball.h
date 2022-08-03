@@ -7,7 +7,7 @@
 
 class Ball {
 private:
-  float speed = 5;
+  float speed = 4;
   float x, y, r;
   int dx = 1;
   int dy = -1;

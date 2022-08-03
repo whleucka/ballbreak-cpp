@@ -43,6 +43,7 @@ private:
   void detectCollisions();
   void loadBricks();
   PointModifier* points = new PointModifier;
+  float calcDistance(float x1, float y1, float x2, float y2);
 
 public:
   Game();

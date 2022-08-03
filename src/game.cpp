@@ -31,6 +31,13 @@ void Game::init() {
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
+    player = new Player((SCREEN_WIDTH / 2) - 60, SCREEN_HEIGHT - 50, 60, 8);
+    ball = new Ball(player, 3);
+    loadBricks();
+}
+
+float Game::calcDistance(float x1, float y1, float x2, float y2) {
+    return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
 }
 
 void Game::detectCollisions() {
@@ -50,34 +57,23 @@ void Game::detectCollisions() {
             float ball_y = ball->isSouth()
                 ? ball_pos->y + ball->getRadius() + ball->getSpeed()
                 : ball_pos->y - ball->getRadius() + ball->getSpeed();
-            if (ball_x >= brick_pos->x && ball_x <= brick_pos->x + brick->getWidth() &&
-                    ball_y >= brick_pos->y && ball_y <= brick_pos->y + brick->getHeight()) {
-                // Figure out bounce
+            float brick_x = brick_pos->x + brick->getWidth() / 2;
+            float brick_y = brick_pos->y + brick->getHeight() / 2;
+
+            float distance = calcDistance(brick_x, brick_y, ball_x, ball_y);
+
+            //if (distance <= ball->getRadius() * 6) {
+            //    brick->setColour(255, 0, 0, 100);
+            //} else {
+            //    brick->setColour(255, 255, 255, 100);
+            //}
+
+            if (distance <= ball->getRadius() * 2.25f) {
+                // TODO: igure out bounce dx?
                 float ball_dx = 0;
-                float ball_dy = 0;
-
-                float brick_x = ball->isEast()
-                    ? brick_pos->x
-                    : brick_pos->x + brick->getWidth();
-
-                if (ball->isEast()) {
-                    if (ball_x < brick_x) {
-                        ball_dx = -1;
-                    } else {
-                        ball_dy = ball->isSouth()
-                            ? -1
-                            : 1;
-                    }
-                } else {
-                    if (ball_x > brick_x) {
-                        ball_dx = 1;
-                    } else {
-                        ball_dy = ball->isSouth()
-                            ? -1
-                            : 1;
-                    }
-                }
-
+                float ball_dy = ball->isSouth()
+                    ? -1
+                    : 1;
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
 
@@ -117,6 +113,7 @@ void Game::detectCollisions() {
             }
 
             ball->setActive(false);
+            ball->changeDirection(0, -1);
         }
     }
 
@@ -133,18 +130,19 @@ void Game::detectCollisions() {
 void Game::loadBricks() {
     srand(time(NULL)); // Seed the random
     float colour_random = rand()%(255-0 + 1) + 0;
-    float start_x = 60;
-    float start_y = 50;
-    float width = 60;
-    float height = 25;
-    int cols = std::floor((SCREEN_WIDTH - start_x - width * 2) / width);
-    int rows = std::min(level, 50) + 2;
+    float colour_random_2 = rand()%(255-0 + 1) + 0;
+    float width = ball->getRadius() * 8;
+    float height = ball->getRadius() * 4;
+    float start_x = width;
+    float start_y = height + 15;
+    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width);
+    int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
             float x = start_x + (width * i);
             float y = start_y + (height * h);
             Brick* b = new Brick(x, y, width, height);
-            b->setColour(255, colour_random, int(i*h*colour_random) % 255, 100);
+            b->setColour(255, colour_random_2, int(i*h*colour_random) % 255, 10);
             bricks.push_back(b);
         }
     }
@@ -152,9 +150,6 @@ void Game::loadBricks() {
 
 void Game::loop() {
     ALLEGRO_EVENT event;
-    player = new Player((SCREEN_WIDTH / 2) - 60, 720, 120, 10);
-    ball = new Ball(player, 5);
-    loadBricks();
 
     while (running) {
         al_wait_for_event(queue, &event);
@@ -170,7 +165,9 @@ void Game::loop() {
                 case ALLEGRO_KEY_LEFT:
                 case ALLEGRO_KEY_RIGHT:
                 case ALLEGRO_KEY_A:
+                case ALLEGRO_KEY_J:
                 case ALLEGRO_KEY_D:
+                case ALLEGRO_KEY_L:
                     player->stop();
                     break;
             }
@@ -204,6 +201,7 @@ void Game::loop() {
         }
 
         if (redraw && al_is_event_queue_empty(queue)) {
+            detectCollisions();
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
             // Display score / level
@@ -217,10 +215,8 @@ void Game::loop() {
             al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 10, 0, the_level);
             al_draw_text(font, al_map_rgb(255, 255, 255), 175, SCREEN_HEIGHT - 10, 0, the_score);
             
-
             // Move ball / player
             if (!paused) {
-                detectCollisions();
                 ball->move();
                 player->move();
             }

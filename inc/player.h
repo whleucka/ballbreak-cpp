@@ -7,7 +7,7 @@
 class Player {
 private:
   float x, y, width, height;
-  int speed = 20;
+  int speed = 10;
   int dx = 0;
 
 public:

@@ -15,7 +15,7 @@ void Player::draw() {
     float y1 = y;
     float x2 = x + width;
     float y2 = y + height;
-    al_draw_filled_rectangle(x1, y1, x2, y2, al_map_rgba(255, 15, 15, 255));
+    al_draw_filled_rectangle(x1, y1, x2, y2, al_map_rgba(15, 255, 15, 200));
 }
 
 void Player::left() {
