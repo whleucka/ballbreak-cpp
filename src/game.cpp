@@ -130,7 +130,7 @@ void Game::loadBricks() {
     float height = ball->getRadius() * 4;
     float start_x = width;
     float start_y = height + 15;
-    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width) + 1;
+    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width);
     int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
@@ -206,9 +206,9 @@ void Game::loop() {
             sprintf(the_score, "SCORE %d", std::max(score, 0));
             sprintf(the_level, "LEVEL %d", level);
             sprintf(the_lives, "LIVES %d", life);
-            al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 10, 0, the_lives);
-            al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 10, 0, the_level);
-            al_draw_text(font, al_map_rgb(255, 255, 255), 175, SCREEN_HEIGHT - 10, 0, the_score);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 25, SCREEN_HEIGHT - 20, 0, the_lives);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 100, SCREEN_HEIGHT - 20, 0, the_level);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 175, SCREEN_HEIGHT - 20, 0, the_score);
             
             // Move ball / player
             if (!paused) {
