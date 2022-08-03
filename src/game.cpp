@@ -44,6 +44,12 @@ float Game::calcDistance(float x1, float y1, float x2, float y2) {
 void Game::detectCollisions() {
     Point* ball_pos = ball->getPosition();
     Point* player_pos = player->getPosition();
+    float ball_x = ball->isEast()
+        ? ball_pos->x + ball->getRadius() + ball->getSpeed()
+        : ball_pos->x - ball->getRadius() + ball->getSpeed();
+    float ball_y = ball->isSouth()
+        ? ball_pos->y + ball->getRadius() + ball->getSpeed()
+        : ball_pos->y - ball->getRadius() + ball->getSpeed();
      
     int brick_count = bricks.size();
     int dead_bricks = 0;
@@ -52,12 +58,6 @@ void Game::detectCollisions() {
     for (Brick* brick: bricks) {
         if (brick->isAlive()) {
             Point* brick_pos = brick->getPosition();
-            float ball_x = ball->isEast()
-                ? ball_pos->x + ball->getRadius() + ball->getSpeed()
-                : ball_pos->x - ball->getRadius() + ball->getSpeed();
-            float ball_y = ball->isSouth()
-                ? ball_pos->y + ball->getRadius() + ball->getSpeed()
-                : ball_pos->y - ball->getRadius() + ball->getSpeed();
             float brick_x = brick_pos->x + brick->getWidth() / 2;
             float brick_y = brick_pos->y + brick->getHeight() / 2;
 
@@ -81,10 +81,10 @@ void Game::detectCollisions() {
 
     if (ball->isSouth()) {
         // Ball hits player :)
-        if (ball_pos->y + ball->getRadius() >  player_pos->y &&
-                ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
-            if (ball_pos->x + ball->getRadius() > player_pos->x && ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
-                float ball_player_angle = std::atan2(ball_pos->y - player_pos->y + player->getHeight() / 2, ball_pos->x - player_pos->x + player->getWidth() / 2) * 180 / M_PI;
+        if (ball_y > player_pos->y &&
+                ball_y < player_pos->y + player->getHeight()) {
+            if (ball_x > player_pos->x && ball_x < player_pos->x + player->getWidth()) {
+                float ball_player_angle = std::atan2(ball_y - player_pos->y + player->getHeight() / 2, ball_x - player_pos->x + player->getWidth() / 2) * 180 / M_PI;
                 float ball_dx = std::cos(ball_player_angle * M_PI / 180);
                 ball->changeDirection(ball_dx, -1);
             }
