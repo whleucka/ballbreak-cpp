@@ -83,8 +83,7 @@ void Game::detectCollisions() {
         // Ball hits player :)
         if (ball_pos->y + ball->getRadius() >  player_pos->y &&
                 ball_pos->y + ball->getRadius() < player_pos->y + player->getHeight()) {
-            // Match y coordinate
-            if (ball_pos->x + ball->getRadius() > player_pos->x && ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) { // Match x coordinate
+            if (ball_pos->x + ball->getRadius() > player_pos->x && ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
                 float ball_player_angle = std::atan2(ball_pos->y - player_pos->y + player->getHeight() / 2, ball_pos->x - player_pos->x + player->getWidth() / 2) * 180 / M_PI;
                 float ball_dx = std::cos(ball_player_angle * M_PI / 180);
                 ball->changeDirection(ball_dx, -1);
