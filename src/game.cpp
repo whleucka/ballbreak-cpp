@@ -1,6 +1,4 @@
-#include "game.h"
-#include "globals.h"
-#include <cmath>
+#include "game.hpp"
 
 Game::Game() {
     // Set up the game and run the loop

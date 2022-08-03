@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ball.h"
-#include "brick.h"
-#include "globals.h"
-#include "player.h"
+#include "ball.hpp"
+#include "brick.hpp"
+#include "globals.hpp"
+#include "player.hpp"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/events.h>

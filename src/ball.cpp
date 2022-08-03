@@ -1,4 +1,4 @@
-#include "ball.h"
+#include "ball.hpp"
 
 Ball::Ball(Player* player, float r) {
     this->player = player;

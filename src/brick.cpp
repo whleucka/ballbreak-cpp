@@ -1,4 +1,4 @@
-#include "brick.h"
+#include "brick.hpp"
 
 Brick::Brick(float x, float y, float r) {
     this->x = x;

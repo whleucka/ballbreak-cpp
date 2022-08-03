@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globals.h"
+#include "globals.hpp"
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
 

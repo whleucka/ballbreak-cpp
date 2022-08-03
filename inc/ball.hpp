@@ -3,8 +3,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
 #include <iostream>
-#include "globals.h"
-#include "player.h"
+#include "globals.hpp"
+#include "player.hpp"
 
 class Ball {
 private:

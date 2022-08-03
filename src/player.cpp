@@ -1,4 +1,4 @@
-#include "player.h"
+#include "player.hpp"
 
 Player::Player(float x, float y, float width, float height) {
     this->x = x;
