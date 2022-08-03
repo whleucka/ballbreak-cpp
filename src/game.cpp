@@ -58,8 +58,8 @@ void Game::detectCollisions() {
     for (Brick* brick: bricks) {
         if (brick->isAlive()) {
             Point* brick_pos = brick->getPosition();
-            float brick_x = brick_pos->x + brick->getWidth() / 2;
-            float brick_y = brick_pos->y + brick->getHeight() / 2;
+            float brick_x = brick_pos->x + brick->getRadius() / 2;
+            float brick_y = brick_pos->y + brick->getRadius() / 2;
 
             float distance = calcDistance(brick_x, brick_y, ball_x, ball_y);
             float ball_brick_angle = std::atan2(ball_y - brick_y, ball_x - brick_x) * 180 / M_PI;
@@ -81,9 +81,9 @@ void Game::detectCollisions() {
 
     if (ball->isSouth()) {
         // Ball hits player :)
-        if (ball_y >= player_pos->y &&
-                ball_y <= player_pos->y + player->getHeight()) {
-            if (ball_x >= player_pos->x && ball_x <= player_pos->x + player->getWidth()) {
+        if (ball_pos->y >= player_pos->y &&
+                ball_pos->y <= player_pos->y + player->getHeight()) {
+            if (ball_pos->x >= player_pos->x && ball_pos->x <= player_pos->x + player->getWidth()) {
                 ball->changeDirection(0, -1);
             }
         }
@@ -119,17 +119,16 @@ void Game::loadBricks() {
     srand(time(NULL)); // Seed the random
     float colour_random = rand()%(255-0 + 1) + 0;
     float colour_random_2 = rand()%(255-0 + 1) + 0;
-    float width = 5;
-    float height = 5;
-    float start_x = width;
-    float start_y = height + 15;
-    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width);
+    float radius = 5;
+    float start_x = radius;
+    float start_y = radius + 15;
+    int cols = std::floor((SCREEN_WIDTH - start_x * 2) / radius);
     int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
-            float x = start_x + (width * 2 * i);
-            float y = start_y + (height * 2 * h);
-            Brick* b = new Brick(x, y, width, height);
+            float x = start_x + (radius * 2 * i);
+            float y = start_y + (radius * 2 * h);
+            Brick* b = new Brick(x, y, radius);
             b->setColour(255, colour_random_2, int(i*h*colour_random) % 255, 10);
             bricks.push_back(b);
         }
