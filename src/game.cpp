@@ -65,7 +65,7 @@ void Game::detectCollisions() {
             float ball_brick_angle = std::atan2(ball_y - brick_y, ball_x - brick_x) * 180 / M_PI;
 
             float ball_dx, ball_dy;
-            if (distance <= ball->getRadius() * 5.0f) {
+            if (distance <= ball->getRadius() * 2) {
                 ball_dx = std::cos(ball_brick_angle * M_PI / 180);
                 ball_dy = std::sin(ball_brick_angle * M_PI / 180);
 
@@ -84,9 +84,7 @@ void Game::detectCollisions() {
         if (ball_y >= player_pos->y &&
                 ball_y <= player_pos->y + player->getHeight()) {
             if (ball_x >= player_pos->x && ball_x <= player_pos->x + player->getWidth()) {
-                float ball_player_angle = std::atan2(ball_y - player_pos->y, ball_x - player_pos->x) * 180 / M_PI;
-                float ball_dx = std::cos(ball_player_angle * M_PI / 180);
-                ball->changeDirection(ball_dx, -1);
+                ball->changeDirection(0, -1);
             }
         }
 
@@ -121,16 +119,16 @@ void Game::loadBricks() {
     srand(time(NULL)); // Seed the random
     float colour_random = rand()%(255-0 + 1) + 0;
     float colour_random_2 = rand()%(255-0 + 1) + 0;
-    float width = ball->getRadius() * 10;
-    float height = ball->getRadius() * 4;
+    float width = 5;
+    float height = 5;
     float start_x = width;
     float start_y = height + 15;
     int cols = std::floor((SCREEN_WIDTH - start_x * 2) / width);
     int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
-            float x = start_x + (width * i);
-            float y = start_y + (height * h);
+            float x = start_x + (width * 2 * i);
+            float y = start_y + (height * 2 * h);
             Brick* b = new Brick(x, y, width, height);
             b->setColour(255, colour_random_2, int(i*h*colour_random) % 255, 10);
             bricks.push_back(b);

@@ -11,11 +11,7 @@ Brick::~Brick() {
 }
 
 void Brick::draw() {
-    float x1 = x;
-    float y1 = y;
-    float x2 = x + width;
-    float y2 = y + height;
-    al_draw_rectangle(x1, y1, x2, y2, al_map_rgba(colour->r, colour->g, colour->b, colour->a), 3);
+    al_draw_filled_circle(x, y, width, al_map_rgba(colour->r, colour->g, colour->b, colour->a));
 }
 
 void Brick::setColour(float r, float g, float b, float a) {
