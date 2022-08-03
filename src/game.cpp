@@ -62,7 +62,7 @@ void Game::detectCollisions() {
             float brick_y = brick_pos->y + brick->getHeight() / 2;
 
             float distance = calcDistance(brick_x, brick_y, ball_x, ball_y);
-            float ball_brick_angle = std::atan2(ball_pos->y - brick_y, ball_pos->x - brick_x) * 180 / M_PI;
+            float ball_brick_angle = std::atan2(ball_y - brick_y, ball_x - brick_x) * 180 / M_PI;
 
             float ball_dx, ball_dy;
             if (distance <= ball->getRadius() * 5.0f) {
@@ -81,17 +81,17 @@ void Game::detectCollisions() {
 
     if (ball->isSouth()) {
         // Ball hits player :)
-        if (ball_y > player_pos->y &&
-                ball_y < player_pos->y + player->getHeight()) {
-            if (ball_x > player_pos->x && ball_x < player_pos->x + player->getWidth()) {
-                float ball_player_angle = std::atan2(ball_y - player_pos->y + player->getHeight() / 2, ball_x - player_pos->x + player->getWidth() / 2) * 180 / M_PI;
+        if (ball_y >= player_pos->y &&
+                ball_y <= player_pos->y + player->getHeight()) {
+            if (ball_x >= player_pos->x && ball_x <= player_pos->x + player->getWidth()) {
+                float ball_player_angle = std::atan2(ball_y - player_pos->y, ball_x - player_pos->x) * 180 / M_PI;
                 float ball_dx = std::cos(ball_player_angle * M_PI / 180);
                 ball->changeDirection(ball_dx, -1);
             }
         }
 
         // Ball hits the floor :(
-        if (ball_pos->y + ball->getRadius() >= SCREEN_HEIGHT) {
+        if (ball_pos->y + ball->getRadius() >= SCREEN_HEIGHT - 30) {
             // Lose a life
             life--;
             score += points->ball;
