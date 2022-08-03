@@ -9,6 +9,7 @@
 #include <allegro5/events.h>
 #include <allegro5/keycodes.h>
 #include <iostream>
+#include <cmath>
 #include <math.h>
 #include <random>
 #include <stdbool.h>

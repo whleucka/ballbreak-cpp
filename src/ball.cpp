@@ -32,14 +32,14 @@ bool Ball::isMoving() {
 void Ball::direction() {
     // Ball direction heading north, east, south, west
     if (x + speed >= SCREEN_WIDTH) {
-        dx = -1;
+        dx = dx * -1;
     } else if (x - speed <= 0) {
-        dx = 1;
+        dx = dx * -1;
     }
     if (y + speed >= SCREEN_HEIGHT) {
-        dy = -1;
+        dy = dy * -1;
     } else if (y - speed <= 0) {
-        dy = 1;
+        dy = dy * -1;
     }
 }
 
@@ -50,9 +50,9 @@ Point* Ball::getPosition() {
     return point;
 }
 
-void Ball::changeDirection(int dx, int dy) {
-    if (dx != 0) 
+void Ball::changeDirection(float dx, float dy) {
+    if (dx != 0.0f) 
         this->dx = dx;
-    if (dy != 0) 
+    if (dy != 0.0f) 
         this->dy = dy;
 }

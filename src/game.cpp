@@ -1,5 +1,6 @@
 #include "game.h"
 #include "globals.h"
+#include <cmath>
 
 Game::Game() {
     // Set up the game and run the loop
@@ -61,26 +62,18 @@ void Game::detectCollisions() {
             float brick_y = brick_pos->y + brick->getHeight() / 2;
 
             float distance = calcDistance(brick_x, brick_y, ball_x, ball_y);
+            float ball_brick_angle = std::atan2(brick_y - ball_pos->y, brick_x - ball_pos->x) * 180 / M_PI;
 
-            //if (distance <= ball->getRadius() * 6) {
-            //    brick->setColour(255, 0, 0, 100);
-            //} else {
-            //    brick->setColour(255, 255, 255, 100);
-            //}
+            float ball_dx, ball_dy;
+            if (distance <= ball->getRadius() * 5.0f) {
+                ball_dx = std::sin(ball_brick_angle * M_PI / 180);
+                ball_dy = ball_brick_angle < 0
+                    ? 1
+                    : -1;
 
-            if (distance <= ball->getRadius() * 2.25f) {
-                // TODO: igure out bounce dx?
-                float ball_dx = 0;
-                float ball_dy = ball->isSouth()
-                    ? -1
-                    : 1;
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
-
-                // Player accumulates points when ball is active
-                if (ball->isActive()) {
-                    score += points->brick;
-                }
+                score += points->brick;
                 break;
             }
         } else {
@@ -96,7 +89,9 @@ void Game::detectCollisions() {
             if (ball_pos->x + ball->getRadius() > player_pos->x &&
                     ball_pos->x + ball->getRadius() < player_pos->x + player->getWidth()) {
                 // Match x coordinate
-                ball->changeDirection(0, -1);
+                float ball_player_angle = std::atan2(ball_pos->y - player_pos->y, ball_pos->x - player_pos->x) * 180 / M_PI;
+                float ball_dx = std::cos(ball_player_angle * M_PI / 180);
+                ball->changeDirection(ball_dx, -1);
             }
         }
 
@@ -131,7 +126,7 @@ void Game::loadBricks() {
     srand(time(NULL)); // Seed the random
     float colour_random = rand()%(255-0 + 1) + 0;
     float colour_random_2 = rand()%(255-0 + 1) + 0;
-    float width = ball->getRadius() * 8;
+    float width = ball->getRadius() * 10;
     float height = ball->getRadius() * 4;
     float start_x = width;
     float start_y = height + 15;

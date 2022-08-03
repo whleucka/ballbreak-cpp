@@ -2,6 +2,7 @@
 
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
+#include <iostream>
 #include "globals.h"
 #include "player.h"
 
@@ -9,8 +10,8 @@ class Ball {
 private:
   float speed = 4;
   float x, y, r;
-  int dx = 1;
-  int dy = -1;
+  float dx = 1;
+  float dy = -1;
 public:
   Ball(Player* player, float r);
  ~Ball();
@@ -23,9 +24,9 @@ public:
   float getSpeed() { return speed; }
   float getRadius() { return r; }
   bool isActive() { return active; }
-  bool isSouth() { return dy == 1; }
-  bool isEast() { return dx == 1; }
-  void changeDirection(int dx = 0, int dy = 0);
+  bool isSouth() { return dy > 0; }
+  bool isEast() { return dx < 0; }
+  void changeDirection(float dx = 0, float dy = 0);
   void setActive(bool active) { this->active = active; }
   Player* player;
 };
