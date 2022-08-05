@@ -124,8 +124,8 @@ void Game::loadBricks() {
     int rows = std::min(level, 45) + 5;
     for (int h = 0; h < rows; h++) {
         for (int i = 0; i < cols; i++) {
-            float x = start_x + (radius * 2 * i);
-            float y = start_y + (radius * 2 * h);
+            float x = start_x + (radius * 4 * i);
+            float y = start_y + (radius * 4 * h);
             Brick* b = new Brick(x, y, radius);
             b->setColour(255, colour_random_2, int(i*h*colour_random) % 255, 10);
             bricks.push_back(b);
