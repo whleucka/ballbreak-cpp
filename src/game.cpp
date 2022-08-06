@@ -70,6 +70,8 @@ void Game::detectCollisions() {
                 ball->changeDirection(ball_dx, ball_dy);
                 brick->kill();
                 score += points->brick;
+                float speed_random = (rand() % 6) + 4;
+                ball->setSpeed(speed_random);
                 break;
             }
         } else {
@@ -99,6 +101,7 @@ void Game::detectCollisions() {
             }
 
             ball->setActive(false);
+            ball->setSpeed(4);
             ball->changeDirection(0, -1);
         }
     }

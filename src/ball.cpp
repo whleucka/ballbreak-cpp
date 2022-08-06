@@ -22,7 +22,6 @@ void Ball::move() {
         x = x + speed * dx;
         y = y + speed * dy;
     }
-
 }
 
 bool Ball::isMoving() {

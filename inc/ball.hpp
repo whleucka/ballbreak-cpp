@@ -28,5 +28,6 @@ public:
   bool isEast() { return dx < 0; }
   void changeDirection(float dx = 0, float dy = 0);
   void setActive(bool active) { this->active = active; }
+  void setSpeed(float speed) { this->speed = speed; }
   Player* player;
 };
