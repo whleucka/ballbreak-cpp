@@ -7,7 +7,7 @@
 class Brick {
 private:
   float x, y, r;
-  Colour* colour;
+  Colour *colour;
   bool alive = true;
 
 public:
@@ -15,7 +15,7 @@ public:
   ~Brick();
   void draw();
   void setColour(float r, float g, float b, float a);
-  Point* getPosition();
+  Point *getPosition();
   bool isAlive() { return alive; }
   float getRadius() { return r; }
   void kill() { alive = false; }

@@ -8,14 +8,14 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/events.h>
 #include <allegro5/keycodes.h>
-#include <iostream>
 #include <cmath>
+#include <iostream>
 #include <math.h>
 #include <random>
 #include <stdbool.h>
-#include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
 struct PointModifier {
   int time = 2;
@@ -43,7 +43,7 @@ private:
   void loop();
   void detectCollisions();
   void loadBricks();
-  PointModifier* points = new PointModifier;
+  PointModifier *points = new PointModifier;
   float calcDistance(float x1, float y1, float x2, float y2);
 
 public:

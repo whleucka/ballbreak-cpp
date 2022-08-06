@@ -1,10 +1,10 @@
 #pragma once
 
+#include "globals.hpp"
+#include "player.hpp"
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/color.h>
 #include <iostream>
-#include "globals.hpp"
-#include "player.hpp"
 
 class Ball {
 private:
@@ -12,15 +12,16 @@ private:
   float x, y, r;
   float dx = 1;
   float dy = -1;
+
 public:
-  Ball(Player* player, float r);
- ~Ball();
+  Ball(Player *player, float r);
+  ~Ball();
   bool active = false;
   void draw();
   void move();
   void direction();
   bool isMoving();
-  Point* getPosition();
+  Point *getPosition();
   float getSpeed() { return speed; }
   float getRadius() { return r; }
   bool isActive() { return active; }
@@ -29,5 +30,5 @@ public:
   void changeDirection(float dx = 0, float dy = 0);
   void setActive(bool active) { this->active = active; }
   void setSpeed(float speed) { this->speed = speed; }
-  Player* player;
+  Player *player;
 };

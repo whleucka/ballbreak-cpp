@@ -5,9 +5,9 @@
 #define FPS 60.0
 
 struct Point {
-    float x, y;
+  float x, y;
 };
 
 struct Colour {
-    float r, g , b, a;
+  float r, g, b, a;
 };
